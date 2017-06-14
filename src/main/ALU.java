@@ -162,35 +162,6 @@ public class ALU {
 
 					result=sign+this.integerRepresentation(String.valueOf(trueE),eLength)+String.valueOf(sChar);
 
-//				for(int i=0;i<2;i++){
-//					numR*=2;
-//					if(numR>1){
-//						numR-=1;
-//						round[i]='1';
-//					}else{
-//						round[i]='0';
-//					}
-//				}
-//				if((round[0]=='0'&&round[1]=='1')||(round[0]=='1'&&round[1]=='0')){
-//					sChar[sLength-1]='0';
-//				}else if(round[0]=='1'&&round[1]=='1') {
-//					String finalSChar = String.valueOf(sChar);
-//					long beforeNumber = Long.valueOf(finalSChar,2);
-//					long finalNumber = beforeNumber + 1;
-//					if ((finalNumber & (1 << sLength)) != 0) {
-//						trueE += 1;
-//						if (trueE >= (1 << (eLength)) - 1) {
-//							judgeOver = true;
-//						}
-//
-//					}
-//					String finalString = Long.toBinaryString(finalNumber);
-//					for(int i=0;i<finalString.length()&&i<sLength;i++){
-//						sChar[sLength-i-1]=finalString.charAt(sLength-i-1);
-//					}for(int i=0;i<(sLength-finalString.length());i++){
-//						sChar[i]='0';
-//					}
-//				}
 			}
 
 			if(judgeOver){
@@ -228,9 +199,7 @@ public class ALU {
 					for(int i=0;i<sLength-index-1;i++) {
 						trueResult[index + i +1] = sChar[i];
 					}
-//					}if(judgeSpecial){
-//						result=sign+this.integerRepresentation(String.valueOf(0),eLength)+new StringBuffer(String.valueOf(sChar)).insert(-trueE-1,1).substring(0,sLength);
-//					}else {
+
 					result=sign+String.valueOf(eChar)+String.valueOf(trueResult);
 				}
 
@@ -252,88 +221,7 @@ public class ALU {
 
 		if(length==64){
 			result=floatRepresentation(number,11,52);
-//			result=floatRepresentation(number,11,54);
-//			char[] round=result.substring(64,66).toCharArray();
-//			eString=result.substring(1,12);
-//			sString=result.substring(12,64);
-//			int sLength=52;
-//			int eLength=11;
-//			int trueE=Integer.parseInt(eString,2);
-//			char[] sChar=sString.toCharArray();
-//			boolean judgeOver=false;
-//
-//			if((round[0]=='0'&&round[1]=='1')||(round[0]=='1'&&round[1]=='0')){
-//				sChar[sLength-1]='0';
-//			}else if(round[0]=='1'&&round[1]=='1') {
-//				String finalSChar = String.valueOf(sChar);
-//				long beforeNumber = Long.valueOf(finalSChar,2);
-//				long finalNumber = beforeNumber + 1;
-//				if ((finalNumber & (1 << sLength)) != 0) {
-//					trueE += 1;
-//					if (trueE >= (1 << (eLength)) - 1) {
-//						judgeOver = true;
-//					}
-//
-//				}
-//				String finalString = Long.toBinaryString(finalNumber);
-//				for(int i=0;i<finalString.length()&&i<sLength;i++){
-//					sChar[sLength-i-1]=finalString.charAt(sLength-i-1);
-//				}for(int i=0;i<(sLength-finalString.length());i++){
-//					sChar[i]='0';
-//				}
-//			}
-//
-//			if(judgeOver){
-//				for(int i=0;i<52;i++){
-//					sChar[i]='0';
-//				}
-//				finalResult=result.substring(0,1)+"11111111111"+String.valueOf(sChar);
-//			}else {
-//				finalResult=result.substring(0,1)+this.integerRepresentation(String.valueOf(trueE),eLength)+String.valueOf(sChar);
-//			}
-//
-
-
 		}else{
-//			result=floatRepresentation(number,8,25);
-//			char[] round=result.substring(32,34).toCharArray();
-//			eString=result.substring(1,9);
-//			sString=result.substring(9,32);
-//			int sLength=23;
-//			int eLength=8;
-//			int trueE=Integer.parseInt(eString,2);
-//			char[] sChar=sString.toCharArray();
-//			boolean judgeOver=false;
-//
-//			if((round[0]=='0'&&round[1]=='1')||(round[0]=='1'&&round[1]=='0')){
-//				sChar[sLength-1]='0';
-//			}else if(round[0]=='1'&&round[1]=='1') {
-//				String finalSChar = String.valueOf(sChar);
-//				long beforeNumber = Long.valueOf(finalSChar,2);
-//				long finalNumber = beforeNumber + 1;
-//				if ((finalNumber & (1 << sLength)) != 0) {
-//					trueE += 1;
-//					if (trueE >= (1 << (eLength)) - 1) {
-//						judgeOver = true;
-//					}
-//
-//				}
-//				String finalString = Long.toBinaryString(finalNumber);
-//				for(int i=0;i<finalString.length()&&i<sLength;i++){
-//					sChar[sLength-i-1]=finalString.charAt(sLength-i-1);
-//				}for(int i=0;i<(sLength-finalString.length());i++){
-//					sChar[i]='0';
-//				}
-//			}
-//
-//			if(judgeOver){
-//				for(int i=0;i<23;i++){
-//					sChar[i]='0';
-//				}
-//				finalResult=result.substring(0,1)+"11111111"+String.valueOf(sChar);
-//			}else {
-//				finalResult=result.substring(0,1)+this.integerRepresentation(String.valueOf(trueE),eLength)+String.valueOf(sChar);
-//			}
 			result=floatRepresentation(number,8,23);
 		}
 		return result;
@@ -431,13 +319,6 @@ public class ALU {
 
 //				非规格化数
 				if(judgeSpecial){
-//					StringBuffer bufferResult=new StringBuffer();
-//					bufferResult.append("0.");
-//					for(int i=0;i<((1<<(eLength-1))-2);i++){
-//						bufferResult.append(0);
-//					}
-//					bufferResult.append(sString);
-//					resultDouble=Double.parseDouble(new String(bufferResult));
 
 					for(int i=0;i<sLength;i++){
 						if(sChar[i]=='1'){
@@ -455,10 +336,6 @@ public class ALU {
 					}
 					resultString+=(String.valueOf(resultDouble));
 				}
-//
-//				long eLong=Long.valueOf(operand.substring(1,1+eLength),2);
-//				eLong-=((1<<(eLength-1))+1);
-
 
 			}
 		}
@@ -1058,14 +935,6 @@ public class ALU {
 			}
 
 
-
-//			if (eEqu) {
-//				eResult = oneAdder(eX).substring(1, eLength + 1);
-//				if (eResult.charAt(0) == '1') {
-//					sResult = "1" + sResult.substring(0, sLength-1);
-//				} else {
-//					sResult = "0" + sResult.substring(0, sLength-1);
-//				}
 				if (eResult.equals(overflow)||eX.charAt(0)=='1'&&eY.charAt(0)=='1'&&eResult.charAt(0)=='0') {
 					char[] tmpChar=new char[sLength];
 					Arrays.fill(tmpChar,'0');
@@ -1277,12 +1146,6 @@ public class ALU {
 			eb=special;
 		}else if(eb.substring(1,eLength+1).equals(special)){
 			mb=mb.substring(0,mb.length());
-//		}
-//		else if(Integer.parseInt(etmp,2)<signNumber+2) {
-//			char[] tmp0=new char[signNumber+2-Integer.parseInt(etmp,2)];
-//			Arrays.fill(tmp0,'0');
-//			mb=String.valueOf(tmp0)+mb;
-//			eb=special;
 		}else if(mb.charAt(0)=='0'){
 			eb=eb.substring(eb.length()-eLength);
 			eb=integerSubtraction(eb,"01",eLength).substring(1,eb.length()+1);
@@ -1306,8 +1169,6 @@ public class ALU {
 			mb+="0";
 		}
 		mb=mb.substring(0,sLength);
-
-
 
 		return over+String.valueOf(sign)+eb.substring(eb.length()-eLength)+mb;
 	}
