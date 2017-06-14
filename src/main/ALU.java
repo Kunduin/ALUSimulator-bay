@@ -813,13 +813,6 @@ public class ALU {
 			}else {
 				sign="0";
 			}
-		}else if(judge0){
-			if (y.charAt(0)=='1'){
-				sign="1";
-			}else {
-				sign="0";
-			}
-
 		}else {
 			sign="0";
 		}
@@ -910,7 +903,19 @@ public class ALU {
 				R.delete(0,length);
 				Q.append(integerSubtraction(Q.substring(0,length),"1",length).substring(1,length+1));
 				Q.delete(0,length);
+			}else if(R.substring(0,length).equals(operand2Buffer.substring(0,length))){
+				R.append(String.valueOf(judge0));
+				R.delete(0,length);
+				Q.append(oneAdder(Q.substring(0,length)).substring(1,length+1));
+				Q.delete(0,length);
+
 			}
+			if(operand1.charAt(0)=='1'&&operand2.charAt(0)=='1'&&Q.charAt(0)=='1'){
+				Q=new StringBuffer(oneAdder(negation(Q.substring(0,Q.length()))).substring(1,Q.length()+1));
+			}
+
+
+
 			return 1+Q.substring(0,length)+R.substring(0,length);
 		}else {
 			if(R.substring(0,length).equals(oneAdder(negation(operand2Buffer.substring(0,length))).substring(1,length+1))){
@@ -918,7 +923,17 @@ public class ALU {
 				R.delete(0,length);
 				Q.append(integerSubtraction(Q.substring(0,length),"01",length).substring(1,length+1));
 				Q.delete(0,length);
+			}else if(R.substring(0,length).equals(operand2Buffer.substring(0,length))){
+				R.append(String.valueOf(judge0));
+				R.delete(0,length);
+				Q.append(oneAdder(Q.substring(0,length)).substring(1,length+1));
+				Q.delete(0,length);
+
 			}
+			if(operand1.charAt(0)=='1'&&operand2.charAt(0)=='1'&&Q.charAt(0)=='1'){
+				Q=new StringBuffer(oneAdder(negation(Q.substring(0,Q.length()))).substring(1,Q.length()+1));
+			}
+
 			return 0+Q.substring(0,length)+R.substring(0,length);
 		}
 	}
@@ -937,40 +952,27 @@ public class ALU {
 		// TODO YOUR CODE HERE.
 		int sign1=Integer.parseInt(operand1.substring(0,1));
 		int sign2=Integer.parseInt(operand2.substring(0,1));
-//		if(operand1.length()>length){
-//			operand1=operand1.substring(operand1.length()-length,operand1.length());
-//		}
-//		if(operand2.length()>length){
-//			operand2=operand2.substring(operand2.length()-length,operand2.length());
-//		}
-
+		operand1="0"+operand1.substring(1,operand1.length());
+		operand2="0"+operand2.substring(1,operand2.length());
 		String tmp=new String();
-		StringBuffer operand1Buffer=new StringBuffer();
-		StringBuffer operand2Buffer=new StringBuffer();
-		for(int i=0;i<length-operand1.length()+1;i++){
-			operand1Buffer.append("0");
-		}operand1Buffer.append(operand1.substring(1,operand1.length()));
-		for(int i=0;i<length-operand2.length()+1;i++){
-			operand2Buffer.append("0");
-		}operand2Buffer.append(operand2.substring(1,operand2.length()));
-		operand1=new String(operand1Buffer);
-		operand2=new String(operand2Buffer);
-
 
 		if(sign1==sign2){
 			tmp=adder(0+operand1,0+operand2,'0',length*2);
 			return tmp.charAt(length)+new String(new StringBuffer(tmp.substring(length+1,length*2+1)).insert(0,sign1));
 		}else{
-			tmp=adder(0+operand1.substring(1,operand1.length()),0+negation(operand2.substring(1,operand2.length())),'1',length);
+			tmp=integerSubtraction("0"+operand1.substring(1,operand1.length()),"0"+operand2.substring(1,operand2.length()),length*2).substring(length,length*2+1);
 			if(tmp.charAt(0)=='1'){
-				return "0"+sign1+"0"+tmp.substring(2,tmp.length());
-			}else {
 				if(sign1==1){
 					sign1=0;
 				}else {
 					sign1=1;
 				}
-				return "0"+sign1+"0"+oneAdder(negation(tmp.substring(1,tmp.length()))).substring(2,length+1);
+				tmp=oneAdder(negation(tmp)).substring(1,tmp.length()+1);
+
+				return "0"+sign1+tmp.substring(1,tmp.length());
+			}else {
+
+				return "0"+sign1+tmp.substring(1,tmp.length());
 			}
 		}
 
@@ -1016,9 +1018,9 @@ public class ALU {
 		String sResult=new String();
 		String eResult=new String();
 
-		eTmp=integerSubtraction(eX,eY,((eLength/4)+1)*4).substring(((eLength/4)+1)*4-eLength-1,((eLength/4)+1)*4);
+		eTmp=integerSubtraction("0"+eX,"0"+eY,((eLength/4)+1)*4).substring(((eLength/4)+1)*4-eLength,((eLength/4)+1)*4+1);
 		eTrue=eTmp.substring(1,eTmp.length());
-		char[] input=new char[Math.abs(Integer.valueOf(integerTrueValue(eTrue)))+1];
+		char[] input=new char[Math.abs(Integer.valueOf(integerTrueValue(eTmp)))+1];
 		char[] gput=new char[gLength];
 		Arrays.fill(input,'0');
 		Arrays.fill(gput,'0');
@@ -1064,7 +1066,7 @@ public class ALU {
 //				} else {
 //					sResult = "0" + sResult.substring(0, sLength-1);
 //				}
-				if (eResult.equals(overflow)) {
+				if (eResult.equals(overflow)||eX.charAt(0)=='1'&&eY.charAt(0)=='1'&&eResult.charAt(0)=='0') {
 					char[] tmpChar=new char[sLength];
 					Arrays.fill(tmpChar,'0');
 					return "1"+sign1+overflow+String.valueOf(tmpChar);
@@ -1072,59 +1074,63 @@ public class ALU {
 //			}
 			return "0" + sign1 + eResult + sResult.substring(sResult.length()-sLength,sResult.length());
 		}else {
-			sResult = integerSubtraction(0 + sX, 0 + sY, ((sY.length() / 4) + 1) * 4).substring(1, ((sY.length() / 4) + 1) * 4 - gLength+1);
+			sResult = signedAddition("0" + sX, "1" + sY, ((sY.length() / 4) + 1) * 4);
+			System.out.println(sResult);
+			sResult=sResult.substring(1);
 			eResult = eX;
 			int count1=0;
 			if(sResult.charAt(0)=='1'){
-				sResult=oneAdder(negation(sResult));
+//				sResult=oneAdder(negation(sResult));
 				if(sign1==1){
 					sign1=0;
 				}else {
 					sign1=1;
 				}
 			}
-			sResult=sResult.substring(sResult.length()-sLength-1,sResult.length());
+			sResult=sResult.substring(sResult.length()-sLength-gLength-1);
 			if(sResult.charAt(0)=='0'){
-				for(int i=1;i<=sLength;i++){
+				for(int i=1;i<=sLength+gLength;i++){
 					if(sResult.charAt(i)=='1'){
 						count1=i;
 						break;
 					}
 				}
-				sResult=sResult.substring(count1,sResult.length());
 				String tmpcount=""+count1;
-				eResult=integerSubtraction(eResult,integerRepresentation(tmpcount,(eLength/4+1)*4),(eLength/4+1)*4).substring((eLength/4+1)*4-eLength,(eLength/4+1)*4+1);
-				if(eResult.equals(special+"0")){
-					sResult="1"+sResult;
-				}else if(eResult.charAt(0)=='1'){
-					int theChange=Integer.parseInt(integerTrueValue(eResult));
-					char[] zero=new char[-theChange];
-					Arrays.fill(zero,'0');
-					sResult=String.valueOf(zero)+"1"+sResult;
-					eResult=special;
+				eResult=integerSubtraction("0"+eResult,integerRepresentation(tmpcount,(eLength/4+1)*4),(eLength/4+1)*4).substring((eLength/4+1)*4-eLength,(eLength/4+1)*4+1);
+				if(eResult.charAt(0)=='1'||eResult.equals("0"+special)) {
+					int theChange = Integer.parseInt(integerTrueValue(eResult));
+					if (-theChange >= sLength) {
+						eResult="0"+special;
+					} else {
+						char[] zero = new char[-theChange+1];
+						Arrays.fill(zero, '0');
+						sResult = String.valueOf(zero) + sResult.substring(count1,sResult.length());
+						eResult = "0" + special;
+					}
+				}else {
+					sResult=sResult.substring(count1,sResult.length());
+
 				}
+
 				eResult=eResult.substring(1,eLength+1);
 			}
 			while(sResult.length()<=sLength){
 				sResult+="0";
 			}
-			if(sResult.length()>sLength+1){
-				char[] tmpLength=new char[sResult.length()-sLength];
-				Arrays.fill(tmpLength,'0');
-				sResult=sResult+String.valueOf(tmpLength);
-			}
 
 			if (eEqu) {
 				if(count1==0){
 					eResult=special;
+
 				}
+				sResult=sResult;
 
 				while (sResult.length()<=sLength){
 					sResult+="0";
 				}
 
 			}
-			return "0" + sign1 + eResult + sResult.substring(sResult.length()-sLength,sResult.length());
+			return "0" + sign1 + eResult + sResult.substring(1,sLength+1);
 		}
 	}
 	
@@ -1202,8 +1208,12 @@ public class ALU {
 
 		if(eb.equals(overflow)||(eX.charAt(0)=='1'&&eY.charAt(0)=='1'&&eb.charAt(0)=='0')){
 			over=1;
+			eb=overflow;
 		}
 
+		if(eb.equals(overflow)){
+			mb=String.valueOf(special0);
+		}
 
 
 		return over+String.valueOf(sign)+eb+mb;
@@ -1237,7 +1247,7 @@ public class ALU {
 		char[] special0=new char[sLength];
 		Arrays.fill(special0,'0');
 		if(operand1.substring(1,operand1.length()).equals(special+String.valueOf(special0))){
-			return "0"+sign+operand1.substring(1,operand1.length());
+			return "0"+"0"+operand1.substring(1,operand1.length());
 		}else if(operand2.substring(1,operand2.length()).equals(special+String.valueOf(special0))){
 			return "0"+sign+overflow+String.valueOf(special0);
 		}
@@ -1255,19 +1265,37 @@ public class ALU {
 		Arrays.fill(tmp,'0');
 
 		etmp=integerSubtraction("0"+eX,"0"+eY,(eLength/4+1)*4).substring((eLength/4+1)*4-eLength+1,(eLength/4+1)*4+1);
-		eb=integerAddition("0"+etmp,integerRepresentation(String.valueOf(signNumber),(eLength/4+1)*4),(eLength/4+1)*4).substring((eLength/4+1)*4-eLength+1,(eLength/4+1)*4+1);
-		mb=integerDivision("01"+sX+String.valueOf(tmp),"01"+sY,sLength*4).substring(sLength*2,2+sLength*3);
+		eb=integerAddition("0"+etmp,integerRepresentation(String.valueOf(signNumber),(eLength/4+1)*4),(eLength/4+1)*4).substring((eLength/4+1)*4-eLength,(eLength/4+1)*4+1);
+		mb=integerDivision("01"+sX+String.valueOf(tmp),"01"+sY,sLength*4);
+		System.out.println(mb);
+		mb=mb.substring(sLength*2,2+sLength*3);
 
-
-
-
-
-
-		if(mb.charAt(0)=='0'){
+		if(eb.charAt(0)=='1'&&Integer.parseInt("0"+etmp,2)<signNumber+2||Integer.parseInt(eb,2)<=(1<<eLength)-1&&Integer.parseInt(eX,2)<Integer.parseInt(eY,2)){
+			char[] tmp0=new char[signNumber+2-Integer.parseInt(etmp,2)];
+			Arrays.fill(tmp0,'0');
+			mb=String.valueOf(tmp0)+mb;
+			eb=special;
+		}else if(eb.substring(1,eLength+1).equals(special)){
+			mb=mb.substring(0,mb.length());
+//		}
+//		else if(Integer.parseInt(etmp,2)<signNumber+2) {
+//			char[] tmp0=new char[signNumber+2-Integer.parseInt(etmp,2)];
+//			Arrays.fill(tmp0,'0');
+//			mb=String.valueOf(tmp0)+mb;
+//			eb=special;
+		}else if(mb.charAt(0)=='0'){
+			eb=eb.substring(eb.length()-eLength);
 			eb=integerSubtraction(eb,"01",eLength).substring(1,eb.length()+1);
-			mb=mb.substring(2,mb.length());
+			if (eb.equals(special)){
+				mb=mb.substring(1,mb.length());
+			}else {
+				mb=mb.substring(2,mb.length());
+			}
+		}else {
+			mb = mb.substring(1, mb.length());
 		}
-		mb=mb.substring(1,mb.length());
+		eb=eb.substring(eb.length()-eLength);
+
 		if(eb.equals(overflow)||(eX.charAt(0)=='1'&&eY.charAt(0)=='0'&&eb.charAt(0)=='0')){
 			over=1;
 		}
@@ -1279,6 +1307,6 @@ public class ALU {
 
 
 
-		return over+String.valueOf(sign)+eb+mb;
+		return over+String.valueOf(sign)+eb.substring(eb.length()-eLength)+mb;
 	}
 }

@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
  */
 public class ALUTest {
     private ALU alu=new ALU();
+    private xALU xalu=new xALU();
     @Test
     public void integerRepresentation() throws Exception {
 
@@ -125,40 +126,49 @@ public class ALUTest {
 
     @Test
     public void integerMultiplication() throws Exception {
-        assertEquals("10000",alu.integerMultiplication("0010", "1000", 4));
+        assertEquals("01000",alu.integerMultiplication("1000", "0001", 4));
     }
 
     @Test
     public void integerDivision() throws Exception {
 //        assertEquals("00000000100000001",alu.integerDivision("0100", "0011", 8));
-        assertEquals("000001101",alu.integerDivision("1101", "0110", 4));
+        assertEquals("000100000",alu.integerDivision("1000", "1100", 4));
 
     }
 
     @Test
     public void signedAddition() throws Exception {
 //        assertEquals("0100000111",alu.signedAddition("1100", "1011", 8));
-        assertEquals("000001",alu.signedAddition("0001", "1000", 4));
+        assertEquals("000001",alu.signedAddition("00001", "10000", 4));
 
     }
 
     @Test
     public void floatAddition() throws Exception {
-        assertEquals("000111111101110000",alu.floatAddition("00111111010100000", "00111111001000000", 8, 8, 4));
+        assertEquals("0011010000",alu.floatAddition("000010000", "011010000", 4, 4, 4));
     }
 
     @Test
     public void floatSubtraction() throws Exception {
+//        assertEquals("0100000001",alu.floatSubtraction("000011111","000100000",4,4,10));
+        assertEquals("0100000011",alu.floatSubtraction("000010000","000010011",4,4,10));
+//        assertEquals("0011010000",alu.floatSubtraction("000010000", "000010001", 4, 4, 4));
+        assertEquals("0100001000",alu.floatSubtraction("000010000","000011000",4,4,10));
+
 
     }
 
     @Test
     public void floatMultiplication() throws Exception {
-
     }
 
     @Test
     public void floatDivision() throws Exception {
+//        assertEquals();
+//        assertEquals("0000000111",xalu.floatDivision("000010000","010000001",4,4));
+
+//        assertEquals("0000000011",alu.floatDivision("000010000","010010001",4,4));
+        assertEquals("0000000010",alu.floatDivision("000010000","010100000",4,4));
 
     }
 
