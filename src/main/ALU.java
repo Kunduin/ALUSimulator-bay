@@ -1296,8 +1296,10 @@ public class ALU {
 		}
 		eb=eb.substring(eb.length()-eLength);
 
-		if(eb.equals(overflow)||(eX.charAt(0)=='1'&&eY.charAt(0)=='0'&&eb.charAt(0)=='0')){
+		if(eb.equals(overflow)||(eX.charAt(0)=='1'&&eY.charAt(0)=='0'&&eb.charAt(0)=='0'&&!eb.substring(1).equals(overflow.substring(1)))){
 			over=1;
+			eb=overflow;
+			mb=String.valueOf(special0);
 		}
 
 		while (mb.length()<sLength){

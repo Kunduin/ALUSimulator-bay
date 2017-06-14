@@ -168,7 +168,7 @@ public class ALUTest {
 //        assertEquals("0000000111",xalu.floatDivision("000010000","010000001",4,4));
 
 //        assertEquals("0000000011",alu.floatDivision("000010000","010010001",4,4));
-        assertEquals("0000000010",alu.floatDivision("000010000","010100000",4,4));
+        assertEquals("1011110000",alu.floatDivision("010100000","000010000",4,4));
 
     }
 
